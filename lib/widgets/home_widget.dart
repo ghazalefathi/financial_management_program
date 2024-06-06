@@ -2,7 +2,6 @@ import 'package:financial_management_program/constants/utlis.dart';
 import 'package:financial_management_program/controllers/public_controller.dart';
 import 'package:financial_management_program/widgets/MyTextButton.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import '../constants/colors.dart';
 import 'dialog/remove_and_edit_transaction_item.dart';
@@ -37,7 +36,6 @@ class HomeWidget extends GetView<publicController> {
           context: context,
           builder: (context) => DialogRemoveAndEditTransactionItem(
             index: index,
-            
           ),
         );
       },

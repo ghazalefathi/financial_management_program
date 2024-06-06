@@ -107,7 +107,7 @@ class AddTransactionScreen extends GetView<publicController> {
                         firstDate: Jalali(1403),
                         lastDate: Jalali(1404),
                       );
-                      controller.date.value = DatePickerMode.year.toString();
+                  
                     },
                     child: Obx(() => MyText(
                           text: '${controller.date.value}',
