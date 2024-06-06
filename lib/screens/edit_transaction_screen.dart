@@ -133,21 +133,16 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     height: 55,
                     padding: EdgeInsets.zero,
                     bgColor: cY,
-                    onTap: () async {
-                     await showPersianDatePicker(
-                          context: context,
-                          initialDate: Jalali.now(),
-                          firstDate: Jalali(1403),
-                          lastDate: Jalali(1404));
-                          
+                    onTap: ()  {
+                    controller.dateTime(context: context);
                     },
-                    child: MyText(
-                      text: 'تاریخ',
-                      fontFamily: 'Cinema',
-                      size: 25,
-                      padding: EdgeInsets.only(bottom: 5),
-                      color: cB,
-                    ),
+                    child: Obx(() => MyText(
+                          text: '${controller.selectedDate.value}',
+                          fontFamily: 'Cinema',
+                          size: 25,
+                          padding: EdgeInsets.only(bottom: 5),
+                          color: cB,
+                        )),
                   ),
                   SizedBox(
                     height: 15,

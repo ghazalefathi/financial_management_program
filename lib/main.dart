@@ -1,3 +1,4 @@
+import 'package:financial_management_program/screens/add_task_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -23,15 +24,14 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'financial-management-program',
-      
         initialRoute: '/splash',
         initialBinding: MyBindings(),
         routes: {
-         
           '/splash': (context) => SplashScreen(),
           '/home': (context) => HomeScreen(),
           '/add-transaction': (context) => AddTransactionScreen(),
           '/edit-transaction': (context) => EditTransactionScreen(),
+          '/add-task': (context) => AddTaskScreen(),
         });
   }
 }

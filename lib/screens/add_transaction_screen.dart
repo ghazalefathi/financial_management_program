@@ -1,16 +1,15 @@
 import 'package:financial_management_program/constants/colors.dart';
 import 'package:financial_management_program/controllers/public_controller.dart';
-import 'package:financial_management_program/models/money_model.dart';
 import 'package:financial_management_program/widgets/MyTextButton.dart';
 import 'package:financial_management_program/widgets/MyTextField.dart';
 import 'package:financial_management_program/widgets/my_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
-class AddTransactionScreen extends GetView<publicController> {
-  const AddTransactionScreen({super.key});
+class AddTransactionScreen extends StatelessWidget {
+  AddTransactionScreen({super.key});
+
+  final controller = Get.find<publicController>();
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,11 @@ class AddTransactionScreen extends GetView<publicController> {
       child: Scaffold(
         appBar: AppBar(
           leading: MyTextButton(
-              onTap: () => Get.back(),
+              onTap: () {
+                Get.back();
+                controller.transactionPriceController.text = '';
+                controller.transactionTitleController.text = '';
+              },
               child: Icon(
                 Icons.arrow_back_ios_new_outlined,
                 color: cB,
@@ -54,8 +57,7 @@ class AddTransactionScreen extends GetView<publicController> {
                     children: [
                       MyText(
                         text: 'عنوان',
-                        fontFamily: 'Cinema',
-                        size: 25,
+                        size: 17,
                         padding: EdgeInsets.only(left: 10),
                       ),
                       Expanded(
@@ -77,8 +79,7 @@ class AddTransactionScreen extends GetView<publicController> {
                     children: [
                       MyText(
                         text: 'مبلغ',
-                        fontFamily: 'Cinema',
-                        size: 25,
+                        size: 17,
                         padding: EdgeInsets.only(left: 10),
                       ),
                       Expanded(
@@ -100,19 +101,12 @@ class AddTransactionScreen extends GetView<publicController> {
                     height: 55,
                     padding: EdgeInsets.zero,
                     bgColor: cY,
-                    onTap: () async {
-                      await showPersianDatePicker(
-                        context: context,
-                        initialDate: Jalali.now(),
-                        firstDate: Jalali(1403),
-                        lastDate: Jalali(1404),
-                      );
-                  
+                    onTap: () {
+                      controller.dateTime(context: context);
                     },
                     child: Obx(() => MyText(
-                          text: '${controller.date.value}',
-                          fontFamily: 'Cinema',
-                          size: 25,
+                          text: '${controller.selectedDate.value}',
+                          size: 17,
                           padding: EdgeInsets.only(bottom: 5),
                           color: cB,
                         )),
@@ -128,8 +122,7 @@ class AddTransactionScreen extends GetView<publicController> {
                             children: [
                               MyText(
                                 text: 'دریافتی',
-                                fontFamily: 'Cinema',
-                                size: 20,
+                                size: 17,
                               ),
                               Radio(
                                 splashRadius: 1,
@@ -148,8 +141,7 @@ class AddTransactionScreen extends GetView<publicController> {
                             children: [
                               MyText(
                                 text: 'پرداختی',
-                                fontFamily: 'Cinema',
-                                size: 20,
+                                size: 17,
                               ),
                               Radio(
                                 splashRadius: 1,
@@ -179,8 +171,8 @@ class AddTransactionScreen extends GetView<publicController> {
                 bgColor: cY,
                 child: MyText(
                   text: 'ثبت',
-                  size: 25,
-                  fontFamily: 'Cinema',
+                  size: 17,
+                  fontWeight: FontWeight.bold,
                   padding: EdgeInsets.only(bottom: 5),
                   color: cB,
                 ))

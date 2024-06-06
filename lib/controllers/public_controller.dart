@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../models/money_model.dart';
 import '../widgets/MySncakBar.dart';
 
@@ -9,7 +10,7 @@ class publicController extends GetxController {
   RxInt selectedBottomNavgiation = 0.obs;
   RxBool hasTextFeild = false.obs;
   RxInt groupValue = 0.obs;
-  RxString date = 'تاریخ'.obs;
+  var selectedDate = 'تاریخ'.obs;
   Rx<MoneyModel> selectedTransaction = MoneyModel().obs;
   TextEditingController transactionTitleController = TextEditingController();
   TextEditingController transactionPriceController = TextEditingController();
@@ -43,7 +44,7 @@ class publicController extends GetxController {
     String txtTitle = transactionTitleController.text.trim();
     if (txtPrice.length > 1 && txtTitle.length > 1) {
       MoneyModel m = MoneyModel(
-          date: date.value,
+          date: selectedDate.value,
           isReceived: groupValue.value == 1 ? true : false,
           price: transactionPriceController.text,
           title: transactionTitleController.text);
@@ -85,5 +86,19 @@ class publicController extends GetxController {
             color: Colors.green,
           ));
     }
+  }
+
+  void dateTime({required BuildContext context}) async {
+    await showPersianDatePicker(
+      context: context,
+      initialDate: Jalali.now(),
+      firstDate: Jalali(1403),
+      lastDate: Jalali(1404),
+    ).then((value) {
+      if (value != null) {
+        selectedDate.value =
+            '${value.formatter.yyyy}/ ${value.formatter.mm} / ${value.formatter.dd}';
+      }
+    });
   }
 }

@@ -10,6 +10,7 @@ import 'my_text_widget.dart';
 class HomeWidget extends GetView<publicController> {
   final String? title;
   final String? price;
+  final String? date;
   final Color? color;
   final Color? priceColor;
   final int index;
@@ -20,6 +21,7 @@ class HomeWidget extends GetView<publicController> {
     this.priceColor,
     this.bottom,
     this.icon,
+    this.date,
     this.color,
     required this.index,
     this.title,
@@ -76,7 +78,7 @@ class HomeWidget extends GetView<publicController> {
                 SizedBox(
                   height: 10,
                 ),
-                MyText(color: cB, text: '1400/12/5'),
+                MyText(color: cB, text: '$date'),
               ],
             ))
           ],

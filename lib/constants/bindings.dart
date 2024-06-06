@@ -5,6 +5,6 @@ class MyBindings extends Bindings {
   @override
   void dependencies() {
     Get.put(publicController());
-    // Get.put(PublicController());
+    
   }
 }
