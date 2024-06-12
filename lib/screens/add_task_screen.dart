@@ -1,3 +1,5 @@
+import 'package:financial_management_program/controllers/public_controller.dart';
+import 'package:financial_management_program/controllers/task_controller.dart';
 import 'package:financial_management_program/widgets/MyTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +8,7 @@ import '../constants/colors.dart';
 import '../widgets/MyTextButton.dart';
 import '../widgets/my_text_widget.dart';
 
-class AddTaskScreen extends StatelessWidget {
+class AddTaskScreen extends GetView<publicController> {
   const AddTaskScreen({super.key});
 
   @override
@@ -39,7 +41,6 @@ class AddTaskScreen extends StatelessWidget {
               child: ListView(
                 physics: BouncingScrollPhysics(),
                 children: [
-                  
                   Image.asset(
                     'assets/images/add_task.png',
                     height: 300,
@@ -58,7 +59,7 @@ class AddTaskScreen extends StatelessWidget {
                       ),
                       Expanded(
                           child: MyTextField(
-                              controller: new TextEditingController(),
+                              controller: controller.titleController,
                               fillColor: cW,
                               txtColor: cB,
                               hasBorder: true,
@@ -86,7 +87,7 @@ class AddTaskScreen extends StatelessWidget {
                       Expanded(
                           child: MyTextField(
                               height: 150,
-                              controller: new TextEditingController(),
+                              controller: controller.txtController,
                               fillColor: cW,
                               txtColor: cB,
                               maxLines: 10,
@@ -105,7 +106,10 @@ class AddTaskScreen extends StatelessWidget {
                 height: 55,
                 bgColor: cY,
                 width: Get.width,
-                onTap: () {},
+                onTap: () {
+                  controller.addTasks();
+                  Get.toNamed('/home');
+                },
                 child: MyText(
                   text: 'ثبت',
                   color: cB,

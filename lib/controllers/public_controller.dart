@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:financial_management_program/controllers/task_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../models/money_model.dart';
+import '../models/task_model.dart';
 import '../widgets/MySncakBar.dart';
 
 class publicController extends GetxController {
@@ -15,21 +17,55 @@ class publicController extends GetxController {
   TextEditingController transactionTitleController = TextEditingController();
   TextEditingController transactionPriceController = TextEditingController();
   RxList<MoneyModel> listTransactions = <MoneyModel>[].obs;
-  //! تعریف هایو برای استفاده
   Box<MoneyModel> hiveBox = Hive.box<MoneyModel>('moneyModelBox');
-  //! Functions
-  //! 2
   RxInt selectedIndexForEdit = 0.obs;
+//! task
+  RxList<TaskModel> listTasks = <TaskModel>[].obs;
+  TextEditingController txtController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  Rx<TaskModel> selectedTask = TaskModel().obs;
+  RxInt selectedIndexForEditTask = 0.obs;
+  Box<TaskModel> hiveBoxTask = Hive.box<TaskModel>('open');
+  void loadListTasks() {
+    listTasks.clear();
+    hiveBoxTask.values.forEach((element) {
+      listTasks.add(element);
+    });
+  }
 
+  void addTasks() {
+    hiveBoxTask.add(TaskModel());
+    String txtTitle = titleController.text.trim();
+    String txtText = txtController.text.trim();
+    if (txtText.length >= 1 && txtText.length >= 1) {
+      TaskModel task = TaskModel(
+        title: txtTitle,
+        txt: txtText,
+      );
+      listTasks.add(task);
+      hiveBoxTask.add(task);
+      // txtController.text = '';
+      // titleController.text = '';
+    }
+    print('save to hive');
+  }
+
+  void removeTask({required int index}) {
+    listTasks.removeAt(index);
+    hiveBoxTask.deleteAt(index);
+    Get.back();
+  }
+
+  //! transaction
   void runSplash() {
     Timer(Duration(seconds: 3), () {
       Get.toNamed('/home');
       //! for show list
       loadlistTransactions();
+      loadListTasks();
     });
   }
 
-  //! for load list in hive 1
   void loadlistTransactions() {
     listTransactions.clear();
     hiveBox.values.forEach((element) {
@@ -37,7 +73,6 @@ class publicController extends GetxController {
     });
   }
 
-  //! add in hive 2
   void addTransaction() {
     hiveBox.add(MoneyModel());
     String txtPrice = transactionPriceController.text.trim();

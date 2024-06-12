@@ -1,3 +1,5 @@
+import 'package:financial_management_program/controllers/public_controller.dart';
+import 'package:financial_management_program/models/task_model.dart';
 import 'package:financial_management_program/widgets/MyTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,9 +8,44 @@ import '../constants/colors.dart';
 import '../widgets/MyTextButton.dart';
 import '../widgets/my_text_widget.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({super.key});
+class EditTaskScreen extends StatefulWidget {
+  const EditTaskScreen({super.key});
 
+  @override
+  State<EditTaskScreen> createState() => _EditTaskScreen();
+}
+
+class _EditTaskScreen extends State<EditTaskScreen> {
+  final controller = Get.find<publicController>();
+  //! for Update
+  //!2
+  late TextEditingController txt;
+  late TextEditingController title;
+  //! for Update
+  //!3
+  @override
+  void initState() {
+    txt = TextEditingController();
+    title = TextEditingController();
+    title.text = controller.selectedTask.value.title ?? '';
+    txt.text = controller.selectedTask.value.txt ?? '';
+
+    super.initState();
+  }
+
+//! forUpdate
+//! 4
+  @override
+  void dispose() {
+    title.dispose();
+    txt.dispose();
+
+    super.dispose();
+  }
+
+  // for update
+  // 4
+  // ست کردن های کنتلرهای جدیدی ک تعریف کردی
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,7 +76,6 @@ class AddTaskScreen extends StatelessWidget {
               child: ListView(
                 physics: BouncingScrollPhysics(),
                 children: [
-                  
                   Image.asset(
                     'assets/images/add_task.png',
                     height: 300,
@@ -58,7 +94,8 @@ class AddTaskScreen extends StatelessWidget {
                       ),
                       Expanded(
                           child: MyTextField(
-                              controller: new TextEditingController(),
+                              //5
+                              controller: title,
                               fillColor: cW,
                               txtColor: cB,
                               hasBorder: true,
@@ -86,7 +123,8 @@ class AddTaskScreen extends StatelessWidget {
                       Expanded(
                           child: MyTextField(
                               height: 150,
-                              controller: new TextEditingController(),
+                              //5
+                              controller: txt,
                               fillColor: cW,
                               txtColor: cB,
                               maxLines: 10,
@@ -105,7 +143,21 @@ class AddTaskScreen extends StatelessWidget {
                 height: 55,
                 bgColor: cY,
                 width: Get.width,
-                onTap: () {},
+                onTap: () {
+                  //! for update onTap section
+                  //1
+                  TaskModel newTask = TaskModel(
+                    title: title.text,
+                    txt: txt.text,
+                  );
+                  //2  لیست در کنتلرindex گرفتن
+                  //save update in hive
+                  //3
+                  controller.hiveBoxTask.putAt(
+                      controller.selectedIndexForEditTask.value, newTask);
+                  Get.toNamed('/home');
+                  print('yes Edit');
+                },
                 child: MyText(
                   text: 'ثبت ویرایش',
                   color: cB,

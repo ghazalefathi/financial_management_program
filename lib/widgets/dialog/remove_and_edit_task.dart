@@ -1,11 +1,11 @@
 import 'package:financial_management_program/controllers/public_controller.dart';
+import 'package:financial_management_program/controllers/task_controller.dart';
+import 'package:financial_management_program/models/task_model.dart';
 import 'package:financial_management_program/widgets/MyTextButton.dart';
 import 'package:financial_management_program/widgets/my_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../constants/colors.dart';
-import '../../models/money_model.dart';
 
 class DialogRemoveAndEditTaskItem extends GetView<publicController> {
   final int index;
@@ -13,7 +13,7 @@ class DialogRemoveAndEditTaskItem extends GetView<publicController> {
 
   @override
   Widget build(BuildContext context) {
-    MoneyModel transaction = controller.listTransactions[index];
+    TaskModel task = controller.listTasks[index];
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       backgroundColor: cW,
@@ -51,9 +51,10 @@ class DialogRemoveAndEditTaskItem extends GetView<publicController> {
                 MyTextButton(
                     width: 80,
                     onTap: () {
-                      controller.selectedTransaction(transaction);
-                      controller.selectedIndexForEdit(index);
-                      Get.toNamed('/edit-transaction');
+                      controller.selectedTask(task);
+                      controller.selectedIndexForEditTask(index);
+                      Get.toNamed('/edit-task');
+                     
                     },
                     height: 35,
                     padding: EdgeInsets.zero,
@@ -75,7 +76,7 @@ class DialogRemoveAndEditTaskItem extends GetView<publicController> {
                 MyTextButton(
                     width: 80,
                     onTap: () {
-                      controller.remove(index: index);
+                      controller.removeTask(index: index);
                     },
                     height: 35,
                     padding: EdgeInsets.zero,

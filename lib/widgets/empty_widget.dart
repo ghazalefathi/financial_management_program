@@ -4,8 +4,10 @@ import '../constants/colors.dart';
 import 'my_text_widget.dart';
 
 class EmptyWidget extends StatelessWidget {
+  final String ? title;
   const EmptyWidget({
     super.key,
+    this.title,
   });
 
   @override
@@ -21,7 +23,7 @@ class EmptyWidget extends StatelessWidget {
           ),
         ),
         MyText(
-          text: 'تراکنشی یافت نشد',
+          text: title ?? 'تراکنشی یافت نشد',
           fontFamily: 'Cinema',
           size: 26,
           color: cB,

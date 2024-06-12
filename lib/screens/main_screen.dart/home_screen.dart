@@ -1,18 +1,17 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:financial_management_program/controllers/public_controller.dart';
+import 'package:financial_management_program/controllers/task_controller.dart';
 import 'package:financial_management_program/widgets/MyTextButton.dart';
 import 'package:financial_management_program/widgets/my_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constants/colors.dart';
-import '../../constants/strings.dart';
 import '../../widgets/dialog/remove_and_edit_task.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/home_widget.dart';
-import '../../widgets/mannagerTransactionWidget.dart';
 
 class HomeScreen extends GetView<publicController> {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +32,7 @@ class HomeScreen extends GetView<publicController> {
                   Get.toNamed('/add-transaction');
                   controller.selectedDate.value = 'تاریخ';
                 } else {
+                  
                   Get.toNamed('/add-task');
                 }
               },
@@ -45,7 +45,7 @@ class HomeScreen extends GetView<publicController> {
 
                   icons: [
                     Icons.home,
-                    Icons.info,
+                    Icons.task,
                   ],
                   activeIndex: controller.selectedBottomNavgiation.value,
                   gapLocation: GapLocation.center,
@@ -129,9 +129,8 @@ class _HomeSectionState extends State<HomeSection> {
   }
 }
 
-class TodoSection extends StatelessWidget {
+class TodoSection extends GetView<publicController> {
   const TodoSection({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -149,24 +148,28 @@ class TodoSection extends StatelessWidget {
           height: 20,
         ),
         Expanded(
-            child: ListView.builder(
-          physics: BouncingScrollPhysics(),
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return TodoWidget(
-              title: 'appName',
-              txt: '$lorem',
-              onTap: () {
-                // showDialog(
-                //   context: context,
-                //   builder: (context) => DialogRemoveAndEditTaskItem(
-                //     index: index,
-                //   ),
-                // );
-              },
-            );
-          },
-        ))
+            child: Obx(() => controller.listTasks.isEmpty
+                ? EmptyWidget(
+                    title: 'تسکی یافت نشد',
+                  )
+                : ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: controller.listTasks.length,
+                    itemBuilder: (context, index) {
+                      return TodoWidget(
+                        title: '${controller.listTasks[index].title}',
+                        txt: '${controller.listTasks[index].txt}',
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => DialogRemoveAndEditTaskItem(
+                              index: index,
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  )))
       ],
     );
   }
@@ -189,6 +192,7 @@ class TodoWidget extends StatelessWidget {
       onTap: onTap,
       padding: EdgeInsets.zero,
       child: Container(
+        width: Get.width,
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         decoration: BoxDecoration(color: cW, boxShadow: [bs1]),
